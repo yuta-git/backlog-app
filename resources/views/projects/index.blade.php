@@ -11,6 +11,9 @@
         <div class="p-6 text-gray-900">
 
           <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+            <div class="mb-5">
+              <a href="{{ route('projects.create') }}" class="text-blue-500">プロジェクト作成</a>
+            </div>
             <table class="table-auto w-full text-left whitespace-no-wrap">
               <thead>
                 <tr>
@@ -24,7 +27,9 @@
                 @foreach ($projects as $project)
                   <tr>
                     <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{ $project->name }}</td>
-                    <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">詳細ボタン</td>
+                    <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">
+                      <a href="{{ route('projects.show', ['id' => $project->id]) }}" class="text-blue-500">詳細</a>
+                    </td>
                   </tr>
                 @endforeach
               </tbody>

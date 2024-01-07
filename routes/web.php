@@ -16,7 +16,15 @@ use App\Http\Controllers\ProjectController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
+
+Route::prefix('projects')->middleware(['auth'])
+    ->controller(ProjectController::class)->name('projects.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/tasks', 'show')->name('show');
+    });
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,4 +40,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

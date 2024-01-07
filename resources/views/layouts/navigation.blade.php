@@ -15,6 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if(Route::currentRouteName() == 'projects.show' || Route::currentRouteName() == 'projects.create')
+                    <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')">
+                        プロジェクト一覧
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +75,11 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if(Route::currentRouteName() == 'projects.show' || Route::currentRouteName() == 'projects.create')
+            <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')">
+                プロジェクト一覧
+            </x-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
