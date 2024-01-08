@@ -24,6 +24,9 @@ Route::prefix('projects')->middleware(['auth'])
         Route::get('create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
         Route::get('/{id}/tasks', 'show')->name('show');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::post('/{id}', 'update')->name('update');
+        Route::post('/{id}/destroy', 'destroy')->name('destroy');
     });
 
 Route::get('/', function () {

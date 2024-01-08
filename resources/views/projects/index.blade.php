@@ -12,8 +12,12 @@
 
           <div class="lg:w-2/3 w-full mx-auto overflow-auto">
             <div class="mb-5">
-              <a href="{{ route('projects.create') }}" class="text-blue-500">プロジェクト作成</a>
+              <a class="text-blue-500" href="{{ route('projects.create') }}">プロジェクト作成</a>
             </div>
+              <form method="get" action="{{route('projects.index')}}">
+                <input type="text" name="search" placeholder="プロジェクト名">
+                <button class="text-white bg-indigo-500 border-0 mb-3 py-2 px-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">検索</button>
+              </form>
             <table class="table-auto w-full text-left whitespace-no-wrap">
               <thead>
                 <tr>
@@ -35,7 +39,7 @@
               </tbody>
             </table>
           </div>
-
+          {{ $projects->links() }}
         </div>
       </div>
     </div>
