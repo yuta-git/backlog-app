@@ -17,16 +17,21 @@ use App\Http\Controllers\ProjectController;
 |
 */
 
-Route::prefix('projects')->middleware(['auth'])
-    ->controller(ProjectController::class)->name('projects.')
+Route::prefix('projects')
+    ->middleware(['auth'])
+    ->controller(ProjectController::class)
+    ->name('projects.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
-        Route::get('/{id}/tasks', 'show')->name('show');
-        Route::get('/{id}/edit', 'edit')->name('edit');
-        Route::post('/{id}', 'update')->name('update');
-        Route::post('/{id}/destroy', 'destroy')->name('destroy');
+        Route::prefix('/{id}')
+            ->group(function () {
+                Route::get('/tasks', 'show')->name('show');
+                Route::get('/edit', 'edit')->name('edit');
+                Route::post('', 'update')->name('update');
+                Route::post('/destroy', 'destroy')->name('destroy');
+            });
     });
 
 Route::get('/', function () {

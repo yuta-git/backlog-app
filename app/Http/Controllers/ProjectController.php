@@ -10,12 +10,9 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-        // $projects = Project::select('id', 'name')->get();
-        // $projects = Project::select('id', 'name')->paginate(2);
-        $search = $request->search;
-        $query = Project::search($search); // $queryには WHERE句が付いている状態
-        $projects = $query->select('id', 'name')->paginate(2);
-        
+        $query = Project::search($request->search); // $queryには WHERE句が付いている状態
+        $projects = $query->paginate(config('pagination.page_size'));
+
         return view('projects.index', compact('projects'));
     }
 
@@ -36,36 +33,37 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $project = Project::find($id);
+        $project = Project::findOrFail($id); //find だとURLを直接いじられると落ちる
 
         return view('projects.show', compact('project'));
     }
 
     public function edit($id)
     {
-        $project = Project::find($id);
+        $project = Project::findOrFail($id);
 
         return view('projects.edit', compact('project'));
     }
 
     public function update(Request $request, $id)
     {
-        $project = Project::find($id);
-        
-        $project->name = $request->name;
-        $project->content = $request->content;
-        $project->save();
+        $project = Project::findOrFail($id);
+        $project->fill([
+            'name' => $request->name,
+            'content' => $request->content,
+        ])->save();
 
-        return to_route('projects.show', ['id'=>$id]);
+        return to_route('projects.show', ['id' => $project->id]);
     }
 
     public function destroy($id)
     {
+        /*
         $project = Project::find($id);
-
         $project->delete();
+        */
+        Project::destroy($id);
 
         return to_route('projects.index');
     }
-
 }
