@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 
 /*
@@ -28,6 +29,22 @@ Route::prefix('projects')
         Route::prefix('/{id}')
             ->group(function () {
                 Route::get('/tasks', 'show')->name('show');
+                Route::get('/edit', 'edit')->name('edit');
+                Route::post('', 'update')->name('update');
+                Route::post('/destroy', 'destroy')->name('destroy');
+            });
+    });
+
+Route::prefix('projects/{project_id}/tasks')
+    ->middleware(['auth'])
+    ->controller(TaskController::class)
+    ->name('tasks.')
+    ->group(function () {
+        Route::get('create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::prefix('/{task_id}')
+            ->group(function () {
+                Route::get('/sub-tasks', 'show')->name('show');
                 Route::get('/edit', 'edit')->name('edit');
                 Route::post('', 'update')->name('update');
                 Route::post('/destroy', 'destroy')->name('destroy');
