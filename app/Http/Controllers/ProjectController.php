@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Task;
 
 class ProjectController extends Controller
 {
@@ -31,11 +32,14 @@ class ProjectController extends Controller
         return to_route('projects.index');
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $project = Project::findOrFail($id); //find だとURLを直接いじられると落ちる
 
-        return view('projects.show', compact('project'));
+        $query = Task::search($request->search); // $queryには WHERE句が付いている状態
+        $tasks = $query->where('project_id', $project->id)->paginate(config('pagination.page_size'));
+
+        return view('projects.show', compact('project', 'tasks'));
     }
 
     public function edit($id)
@@ -61,9 +65,11 @@ class ProjectController extends Controller
         /*
         $project = Project::find($id);
         $project->delete();
+        と同じ処理を以下のコードで行っている。
         */
         Project::destroy($id);
 
         return to_route('projects.index');
     }
+    
 }
