@@ -9,6 +9,10 @@ class Task extends Model
 {
     use HasFactory;
 
+    public function project() {
+      return $this->belongsTo(Project::class);
+    }
+
     protected $fillable = [
         'name',
         'deadline',
@@ -16,6 +20,10 @@ class Task extends Model
         'user_id',
         'project_id',
     ];
+
+    protected $casts = [
+      'deadline' => 'datetime',
+    ];  
 
     /**
      * プロジェクト名で絞り込むようにクエリのスコープを設定

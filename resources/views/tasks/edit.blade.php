@@ -28,7 +28,7 @@
                     <div class="p-2 w-full">
                       <div class="relative">
                         <label for="deadline" class="leading-7 text-sm text-gray-600">期限</label>
-                        <input type="date" id="deadline" name="deadline" value="{{ $task->deadline }}"
+                        <input type="date" id="deadline" name="deadline" value="{{ $task->deadline->format('Y-m-d') }}"
                           class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                       </div>
                     </div>
@@ -36,8 +36,7 @@
                       <div class="relative">
                         <label for="content" class="leading-7 text-sm text-gray-600">内容</label>
                         <textarea id="content" name="content"
-                          class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                        {{ $task->content }}
+                          class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">{{ $task->content }}
                         </textarea>
                       </div>
                     </div>

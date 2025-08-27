@@ -83,9 +83,10 @@
                 @foreach ($tasks as $task)
                 <tr>
                   <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{$task->name}}</td>
-                  <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{$task->deadline}}</td>
+                  <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">{{$task->deadline->format('Y年m月d日')}}</td>
                   <td class="border-t-2 border-b-2 border-gray-200 px-4 py-3">
-                    <a href="{{ route('tasks.show', ['project_id'=>$project->id, 'task_id'=>$task->id]) }}" class="text-blue-500">詳細</a>
+                    <a href="{{ route('tasks.show', ['project_id'=>$project->id, 'task_id'=>$task->id]) }}"
+                      class="text-blue-500">詳細</a>
                   </td>
                 </tr>
                 @endforeach

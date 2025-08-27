@@ -26,7 +26,7 @@
                       <label for="deadline" class="leading-7 text-sm text-gray-600">期限</label>
                       <div
                         class="w-full bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                        {{ $task->deadline }}</div>
+                        {{ $task->deadline->format('Y年m月d日') }}</div>
                     </div>
                   </div>
                   <div class="p-2 w-full">
@@ -38,14 +38,16 @@
                     </div>
                   </div>
                   {{-- 編集ボタン --}}
-                  <form method="get" action="{{ route('tasks.edit', ['project_id' => $project->id,'task_id' => $task->id]) }}">
+                  <form method="get"
+                    action="{{ route('tasks.edit', ['project_id' => $project->id,'task_id' => $task->id]) }}">
                     <div class="p-2 w-full">
                       <button
                         class="flex mx-auto  text-white bg-indigo-500 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</button>
                     </div>
                   </form>
                   {{-- 削除ボタン --}}
-                  <form method="post" action="{{ route('tasks.destroy', ['project_id' => $project->id,'task_id' => $task->id]) }}">
+                  <form method="post"
+                    action="{{ route('tasks.destroy', ['project_id' => $project->id,'task_id' => $task->id]) }}">
                     @csrf
                     <div class="p-2 w-full">
                       <button
