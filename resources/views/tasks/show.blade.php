@@ -39,7 +39,7 @@
                   </div>
                   {{-- 編集ボタン --}}
                   <form method="get"
-                    action="{{ route('tasks.edit', ['project_id' => $project->id,'task_id' => $task->id]) }}">
+                    action="{{ route('tasks.edit', ['project_id' => $task->project->id,'task_id' => $task->id]) }}">
                     <div class="p-2 w-full">
                       <button
                         class="flex mx-auto  text-white bg-indigo-500 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</button>
@@ -47,7 +47,7 @@
                   </form>
                   {{-- 削除ボタン --}}
                   <form method="post"
-                    action="{{ route('tasks.destroy', ['project_id' => $project->id,'task_id' => $task->id]) }}">
+                    action="{{ route('tasks.destroy', ['project_id' => $task->project->id,'task_id' => $task->id]) }}">
                     @csrf
                     <div class="p-2 w-full">
                       <button

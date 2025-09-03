@@ -30,12 +30,12 @@ class TaskController extends Controller
 
   public function show($project_id, $task_id)
   {
-    $project = Task::findOrFail($project_id)->project;
-    $task = Task::findOrFail($task_id); //find だとURLを直接いじられると落ちる
+    $task = Task::findOrFail($task_id);
+    // $task->project; // 関連するプロジェクトをbladeで取得
 
     // dd($project, $task);
 
-    return view('tasks.show', compact('task', 'project'));
+    return view('tasks.show', compact('task'));
 
   }
 
@@ -49,24 +49,23 @@ class TaskController extends Controller
 
   public function update(Request $request, $project_id, $task_id)
   {
-    $project = Task::findOrFail($project_id)->project;
     $task = Task::findOrFail($task_id);
+    
     $task->fill([
       'name' => $request->name,
       'deadline' => $request->deadline,
       'content' => $request->content,
       'user_id' => $request->user_id,
-      'project_id' => $request->project_id,
+      'project_id' => $project_id,
     ])->save();
 
-    return to_route('tasks.show', ['project_id' => $project->id, 'task_id' => $task->id]);
+    return to_route('projects.show', ['id' => $task->project->id]);
   }
 
   public function destroy($project_id, $task_id)
   {
     Task::destroy($task_id);
 
-    $project = Project::findOrFail($project_id);
-    return to_route('projects.show', ['id' => $project->id]);
+    return to_route('projects.show', ['id' => $project_id]);
   }
 }
