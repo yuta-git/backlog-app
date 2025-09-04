@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 
 /*
@@ -17,35 +18,54 @@ use App\Http\Controllers\ProjectController;
 |
 */
 
-Route::prefix('projects')
-    ->middleware(['auth'])
-    ->controller(ProjectController::class)
-    ->name('projects.')
+Route::middleware(['auth'])->group(function () {
+  Route::prefix('projects')
     ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('create', 'create')->name('create');
-        Route::post('/', 'store')->name('store');
-        Route::prefix('/{id}')
+      Route::controller(ProjectController::class)
+        ->name('projects.')
+        ->group(function () {
+          Route::get('/', 'index')->name('index');
+          Route::get('create', 'create')->name('create');
+          Route::post('/', 'store')->name('store');
+          Route::prefix('/{id}')
             ->group(function () {
-                Route::get('/tasks', 'show')->name('show');
-                Route::get('/edit', 'edit')->name('edit');
-                Route::post('', 'update')->name('update');
-                Route::post('/destroy', 'destroy')->name('destroy');
+              Route::get('/tasks', 'show')->name('show');
+              Route::get('/edit', 'edit')->name('edit');
+              Route::post('', 'update')->name('update');
+              Route::post('/destroy', 'destroy')->name('destroy');
             });
+        });
+
+      Route::prefix('/{project_id}/tasks')
+        ->controller(TaskController::class)
+        ->name('tasks.')
+        ->group(function () {
+          Route::get('create', 'create')->name('create');
+          Route::post('/', 'store')->name('store');
+          Route::prefix('/{task_id}')
+            ->group(function () {
+              Route::get('/sub-tasks', 'show')->name('show');
+              Route::get('/edit', 'edit')->name('edit');
+              Route::post('', 'update')->name('update');
+              Route::post('/destroy', 'destroy')->name('destroy');
+            });
+        });
     });
+});
+
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+  return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
