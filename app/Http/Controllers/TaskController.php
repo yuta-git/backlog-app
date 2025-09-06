@@ -30,13 +30,16 @@ class TaskController extends Controller
 
   public function show($project_id, $task_id)
   {
+    
     $task = Task::findOrFail($task_id);
     // $task->project; // 関連するプロジェクトをbladeで取得
 
-    // dd($project, $task);
+    // サブタスク一覧
+    $subTasks = $task->subTasks;
 
-    return view('tasks.show', compact('task'));
+    // dd($subTasks, $task);
 
+    return view('tasks.show', compact('task', 'subTasks'));
   }
 
   public function edit($project_id, $task_id)

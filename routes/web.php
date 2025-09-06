@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SubTaskController;
 
 
 /*
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
             });
         });
 
+      // Tasksを追加
       Route::prefix('/{project_id}/tasks')
         ->controller(TaskController::class)
         ->name('tasks.')
@@ -48,6 +50,19 @@ Route::middleware(['auth'])->group(function () {
               Route::get('/edit', 'edit')->name('edit');
               Route::post('', 'update')->name('update');
               Route::post('/destroy', 'destroy')->name('destroy');
+
+              // SubTasksを追加
+              Route::prefix('sub-tasks')
+                ->controller(SubTaskController::class)
+                ->name('sub_tasks.')
+                ->group(function () {
+                  Route::get('create', 'create')->name('create');
+                  Route::post('/', 'store')->name('store');
+                  Route::get('{sub_task_id}', 'show')->name('show');
+                  Route::get('{sub_task_id}/edit', 'edit')->name('edit');
+                  Route::post('{sub_task_id}', 'update')->name('update');
+                  Route::post('{sub_task_id}/destroy', 'destroy')->name('destroy');
+                });
             });
         });
     });
