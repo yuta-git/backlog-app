@@ -30,15 +30,12 @@ class TaskController extends Controller
 
   public function show($project_id, $task_id)
   {
+
+    // 1回のクエリで両方取得
+    $task = Task::with('subTasks')->findOrFail($task_id);  // 1回で Task + SubTasks を取得
+    $subTasks = $task->subTasks;  // データベースにアクセスせず、既に読み込み済みのデータを使用
     
-    $task = Task::findOrFail($task_id);
     // $task->project; // 関連するプロジェクトをbladeで取得
-
-    // サブタスク一覧
-    $subTasks = $task->subTasks;
-
-    // dd($subTasks, $task);
-
     return view('tasks.show', compact('task', 'subTasks'));
   }
 
@@ -53,7 +50,7 @@ class TaskController extends Controller
   public function update(Request $request, $project_id, $task_id)
   {
     $task = Task::findOrFail($task_id);
-    
+
     $task->fill([
       'name' => $request->name,
       'deadline' => $request->deadline,

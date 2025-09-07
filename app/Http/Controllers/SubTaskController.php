@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubTaskStoreRequest;
 use App\Models\SubTask;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -18,17 +19,15 @@ class SubTaskController extends Controller
     return view('sub_tasks.create', compact('task', 'project'));
   }
 
-  public function store(Request $request, $project_id, $task_id)
+  public function store(SubTaskStoreRequest $request, $project_id, $task_id)
   {
-    $validated = $request->validate([
-      'name' => 'required|string|max:30',
-      'content' => 'nullable|string',
-    ]);
+
+    // FormRequestで既にバリデーション済みなので、validated()メソッドを使用
+    $validated = $request->validated();
 
     $subTask = new SubTask();
-    $subTask->name = $validated['name'];
-    $subTask->content = $validated['content'] ?? null;
-    $subTask->task_id = $task_id;
+    $subTask->fill($validated);
+    $subTask->task_id = $task_id; // task_idは別途セット
     $subTask->save();
 
     $task = Task::findOrFail($task_id);
@@ -40,11 +39,11 @@ class SubTaskController extends Controller
 
   public function show($project_id, $task_id, $sub_task_id)
   {
-    $subTask = SubTask::findOrFail($sub_task_id);
-    $task = Task::findOrFail($task_id);
-    $project = $task->project;
+     // リレーションでたどる + N+1対策のwithを使用
+    $subTask = SubTask::with(['task.project'])->findOrFail($sub_task_id);
 
-    return view('sub_tasks.show', compact('subTask', 'task', 'project'));
+    // viewには$subTaskだけ渡す
+    return view('sub_tasks.show', compact('subTask'));
   }
 
   public function update(Request $request, $project_id, $task_id, $sub_task_id)
