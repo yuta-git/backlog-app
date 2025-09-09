@@ -7,22 +7,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
-    {
-        Schema::create('sub_tasks', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name', 30);
-            $table->text('content')->nullable();
-            $table->timestamps();
+  public function up(): void
+  {
+    Schema::create('sub_tasks', function (Blueprint $table) {
+      $table->bigIncrements('id');
 
-            $table->foreignIdFor(Task::class)
-                ->constrained()
-                ->onDelete('cascade');
-        });
-    }
+      //IDとNAMEの間のほうがDBを直接見たときに分かりやすい「このレコードが紐づいているタスクIDは何なのか？」
+      $table->foreignIdFor(Task::class)
+        ->constrained()
+        ->onDelete('cascade');
 
-    public function down(): void
-    {
-        Schema::dropIfExists('sub_tasks');
-    }
+      $table->string('name', 30);
+      $table->text('content')->nullable();
+      $table->timestamps();
+    });
+  }
+
+  public function down(): void
+  {
+    Schema::dropIfExists('sub_tasks');
+  }
 };
